@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Result Analyser</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+  <header>
+    <h1>Student Result Analyser</h1>
+    <p class="subtitle">Enter student marks and generate results instantly.</p>
+  </header>
+
+  <main>
+
+    <!-- ================================================================
+         SECTION 1 — Setup: define subjects
+    ================================================================ -->
+    <section id="setup-section">
+      <h2>Step 1 — Configure Subjects</h2>
+      <p>Enter subject names separated by commas, e.g. <code>Math, Science, English</code></p>
+
+      <form id="setup-form" novalidate>
+        <div class="form-group">
+          <label for="subjects-input">Subjects</label>
+          <input
+            type="text"
+            id="subjects-input"
+            name="subjects"
+            placeholder="Math, Science, English"
+            autocomplete="off"
+            required
+          />
+        </div>
+        <p id="setup-error" class="error-msg" hidden></p>
+        <button type="submit" class="btn btn-primary">Set Subjects &amp; Continue</button>
+      </form>
+    </section>
+
+    <!-- ================================================================
+         SECTION 2 — Entry: add students
+    ================================================================ -->
+    <section id="entry-section" hidden>
+      <div class="section-header">
+        <h2>Step 2 — Enter Student Marks</h2>
+        <button id="change-subjects-btn" class="btn btn-secondary btn-sm">Change Subjects</button>
+      </div>
+
+      <form id="entry-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="student-name">Student Name</label>
+            <input
+              type="text"
+              id="student-name"
+              name="name"
+              placeholder="e.g. Alice Johnson"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="roll-number">Roll Number</label>
+            <input
+              type="text"
+              id="roll-number"
+              name="roll_number"
+              placeholder="e.g. R001"
+              autocomplete="off"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Subject mark inputs are injected here by JavaScript -->
+        <div id="marks-inputs" class="marks-grid"></div>
+
+        <p id="entry-error" class="error-msg" hidden></p>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Add Student</button>
+          <button type="button" id="view-results-btn" class="btn btn-success">
+            View Results
+          </button>
+        </div>
+      </form>
+
+      <!-- Live table of added students -->
+      <div id="student-table-wrapper" hidden>
+        <h3>Students Added (<span id="student-count">0</span>)</h3>
+        <table id="student-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Roll No.</th>
+              <th>Total</th>
+              <th>%</th>
+              <th>Grade</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody id="student-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         SECTION 3 — Results: full report
+    ================================================================ -->
+    <section id="results-section" hidden>
+      <div class="section-header">
+        <h2>Results Report</h2>
+        <div class="section-actions">
+          <button id="back-btn" class="btn btn-secondary">← Back to Entry</button>
+          <button id="reset-btn" class="btn btn-danger">Reset All</button>
+        </div>
+      </div>
+
+      <!-- Class statistics summary -->
+      <div id="class-stats" class="stats-card" hidden>
+        <h3>Class Statistics</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-label">Total Students</span>
+            <span id="stat-total" class="stat-value">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Class Average</span>
+            <span id="stat-average" class="stat-value">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Passed</span>
+            <span id="stat-passed" class="stat-value pass-text">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Failed</span>
+            <span id="stat-failed" class="stat-value fail-text">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Highest Scorer(s)</span>
+            <span id="stat-highest" class="stat-value">—</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Lowest Scorer(s)</span>
+            <span id="stat-lowest" class="stat-value">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Per-student result cards rendered by JavaScript -->
+      <div id="result-cards"></div>
+
+      <p id="results-error" class="error-msg" hidden></p>
+    </section>
+
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
